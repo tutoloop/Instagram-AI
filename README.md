@@ -13,10 +13,15 @@ Instagramのリール投稿（リスト・ランキング・チェックリス�
 
 ## はじめかた
 
+**「ドキュメント」フォルダに移動してからクローンしてください。** 何も指定せずにクローンすると、ターミナルの起動位置（Windowsではユーザーフォルダの奥深く）にできてしまい、後からエクスプローラーで探しても見つかりません。
+
 ```bash
+cd ~/Documents        # または cd "/mnt/c/Users/<自分のユーザー名>/Documents"
 git clone https://github.com/tutoloop/Instagram-AI.git
 cd Instagram-AI
 ```
+
+これで`ドキュメント\Instagram-AI`にでき、エクスプローラーの「ドキュメント」を開けばすぐ見つかります。
 
 このフォルダをClaude Codeで開き、次のどちらかを入力してください。
 
