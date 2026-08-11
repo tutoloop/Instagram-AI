@@ -27,7 +27,19 @@ git clone https://github.com/tutoloop/Instagram-AI.git .
 
 これで、**自分がさっき作ったフォルダの中**にファイル一式ができる。自分で作った場所なので、「どこにあるか分からない」が起きない。
 
-続けて、同じVS Code内のターミナルでClaude Codeを起動し、次のどちらかを入力してください。
+5. 同じVS Code内のターミナルで、Claude Codeを起動する
+
+```bash
+claude
+```
+
+確認のたびに止められるのが煩わしければ、代わりに次のコマンドで起動してもよい（ファイル操作・コマンド実行の確認をすべてスキップして進める）。
+
+```bash
+claude --dangerously-skip-permissions
+```
+
+6. Claude Codeが起動したら、次のどちらかを入力する
 
 ```
 /setup
