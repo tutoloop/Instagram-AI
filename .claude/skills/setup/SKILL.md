@@ -94,6 +94,9 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 - **ジャンル**（例: 就活／筋トレ／節約／語学…）
 - **投稿の構造がリスト・ランキング・チェックリストに分解できるか**（→ルートCLAUDE.md「導入時にまず決めること」の判定基準を一緒に確認する。分解できないなら、この仕組みが合わないことを正直に伝える）
 - **Pexels APIキー**を持っているか（無ければ https://www.pexels.com/api/ でアカウント作成→取得してもらう。この値だけはClaudeが代わりに取得できないので、ユーザーにコピペしてもらう）
+- **（任意・スキップ可）分析機能用のFacebook/Instagramログイン情報**（メールアドレス・パスワード）。`分析/`でインサイトを自動取得したい場合だけ聞く。**必ず「いま設定しますか？後回しでも大丈夫です」と選べる形で聞き、スキップされたら深追いしない**。理由を尋ねる必要もない
+  - 提供された場合 → `分析/.env`に`FB_EMAIL=` `FB_PASSWORD=`として保存する（`.gitignore`で除外済みなので、コミットにもGitHubにも一切乗らない。保存したらその場で「このファイルはあなたのPCの中だけに残り、外には送信されません」と伝える）
+  - スキップされた場合 → `分析/.env`は作らず、`分析/README.md`にある「後で使いたくなったら`.env.example`をコピーして書く」手順を一言案内するだけで次に進む
 
 ## 2. プレースホルダーの書き換え
 
@@ -103,6 +106,7 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 - `Tier表/draft/*/*.html` 内の `＠アカウント名`
 - `動画生成/pexels_queries.py.example` を `pexels_queries.py` にコピーし、`PEXELS_API_KEY` を実際のキーに差し替える（`.gitignore`済みなのでコミットされない）
 - 必要なら `動画生成/pexels_queries.py` にジャンル用の `PEXELS_QUERIES_<名前>` を追記し、`fetch_bg_videos.py` の `THEMES` に1行足す
+- FB/IGログイン情報を受け取った場合のみ `分析/.env` を作成（上記の通り）
 
 ## 3. 最初の1本を一緒に作る
 
