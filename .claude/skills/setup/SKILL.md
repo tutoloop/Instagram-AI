@@ -13,6 +13,11 @@ Claude Code自体が使える時点でこのスキルは呼び出せている＝
 
 買い手のPCには何も入っていない前提で始める。**Claudeが自分でコマンドを実行して確認・インストールする**（ユーザーに手順書を渡して終わりにしない）。
 
+**このリポジトリはエクスプローラーで見える場所（Windowsなら`/mnt/c/...`配下）に置かれている前提**で進める（→READMEの「はじめかた」）。WSLからこの種のパスを操作すると、`npm install`や`git clone`の直後に「フォルダが見つからない」のような**一時的なエラー**が出ることがある（Windows Defenderのリアルタイムスキャンとの競合が典型的な原因）。このエラーが出たら:
+
+1. 慌てず同じコマンドをもう一度実行する（大抵はこれで通る）
+2. 2〜3回失敗が続くようなら、作業フォルダをWindows Defenderのスキャン対象外に追加することを提案する（管理者権限のPowerShellで`Add-MpPreference -ExclusionPath "<フォルダのフルパス>"`、またはGUIで「ウイルスと脅威の防止」→「除外の追加」）
+
 ### 0-1. OSを判定する
 
 ```bash
@@ -90,6 +95,8 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 うまくいかない場合によくある原因:
 - `npx playwright-core install chromium`が権限エラー → 管理者権限で実行し直すか、ユーザーディレクトリ配下に入るはずなので原因を切り分ける
 - `node`コマンドが見つからない → 0-2のインストール後にターミナル（Claude Codeのセッション）を再起動していない可能性が高い
+- `pip install`が`externally-managed-environment`で失敗 → `--break-system-packages`を付けて再実行（Ubuntu/WSLの最近のイメージで標準の挙動）
+- 「フォルダが見つからない」等の一時的なエラー → 同じコマンドをもう一度実行する。繰り返すならDefenderのスキャン対象外設定を案内する（このファイル冒頭を参照）
 
 ---
 
