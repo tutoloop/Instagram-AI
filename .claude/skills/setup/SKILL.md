@@ -1,35 +1,101 @@
 ---
 name: setup
-description: このリポジトリを新しいアカウント・ジャンル向けに初期設定するスキル。「セットアップして」「導入して」「/setup」で使う。導入元（販売者）とのライブ通話をしながら、購入者自身が自分のPCで実行する想定（非技術者への完全放置セルフサーブ用ではない）。
+description: このリポジトリを初めて使う人向けの導入セットアップ。ランタイム（Node.js/Python/Chromium）のインストールから、アカウント・ジャンルの初期設定まで対話形式で一気に進める。「セットアップして」「導入して」「/setup」で使う。非技術者が自分のPCで、Claude Codeとの対話だけで完了させる想定。
 ---
 
 # 導入セットアップ
 
-このスキルは、汎用状態のリポジトリを「特定のアカウント・ジャンル用」に初期化するための手順書です。**このClaude Codeを操作しているのは購入者自身**で、導入元（販売者）とは別途ビデオ通話等で繋がっている想定です。通話の相手（販売者）が口頭でガイドするので、Claudeは選択肢を分かりやすく提示し、購入者がその場で答えられる粒度の質問を1つずつ投げること。コマンドを長々流すより、確認を挟みながら進める。
+**このスキルを実行しているのはClaude Codeを使い始めたばかりの非技術者**という前提で進める。コマンドの意味を聞かれたら都度かみ砕いて説明し、失敗したらエラーメッセージをそのまま見せず「〇〇が原因っぽいので次はこうします」と要約して次の一手を示す。一度に大量のコマンドを流さず、**1ステップごとに結果を確認してから次に進む**。
 
-## 進め方
+Claude Code自体が使える時点でこのスキルは呼び出せている＝一番の関門は超えているので、ここから先は基本的にClaudeがコマンドを実行して進める。ユーザーに手打ちさせるのは「はい/いいえ」の返事や、APIキーのような**Claudeが代わりに取得できない値の入力**だけでよい。
 
-### 1. 環境チェック
+## 0. ランタイム環境の構築（Node.js / Python / Chromium）
 
-以下を順に確認し、入っていなければインストール方法を案内する（詰まったら通話相手＝販売者が引き取って対応する）。
+買い手のPCには何も入っていない前提で始める。**Claudeが自分でコマンドを実行して確認・インストールする**（ユーザーに手順書を渡して終わりにしない）。
+
+### 0-1. OSを判定する
 
 ```bash
-node --version    # v18以上目安
+uname -s 2>/dev/null || echo "uname-not-found"
+```
+
+- `Linux` → WSL上のLinuxとして扱う（`apt`が使えることが多い）
+- `Darwin` → macOS
+- `MINGW*` / `MSYS*` / `uname-not-found` → Windows（Git Bash等の可能性）。この場合はコマンドプロンプト/PowerShellから`winget`で入れる案内に切り替える
+
+### 0-2. Node.jsの確認・インストール
+
+```bash
+node --version
+```
+
+コマンドが見つからない、またはメジャーバージョンが18未満なら入れる。
+
+| OS | インストールコマンド |
+|---|---|
+| Windows | `winget install -e --id OpenJS.NodeJS.LTS`（Windows 10 2004以降/11に標準搭載。無ければ https://nodejs.org/ja/ からインストーラーを落として案内する） |
+| macOS | `brew install node`（Homebrewが無ければ先に `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` で入れる） |
+| Linux (WSL/Ubuntu系) | `sudo apt-get update && sudo apt-get install -y nodejs npm`。バージョンが古い場合は https://github.com/nodesource/distributions の手順でLTSを入れ直す |
+
+インストール後、必ず`node --version`で入ったことを確認してから次へ進む（シェルの再起動が必要な場合はその旨を伝える）。
+
+### 0-3. Python 3の確認・インストール
+
+```bash
 python3 --version
 ```
 
-`テキスト画像生成/` `ノート画像生成/` それぞれで `npm install` が済んでいるか確認（`node_modules/` の有無）。
+無ければ入れる。
 
-### 2. ヒアリング
+| OS | インストールコマンド |
+|---|---|
+| Windows | `winget install -e --id Python.Python.3.12` |
+| macOS | `brew install python3` |
+| Linux (WSL/Ubuntu系) | `sudo apt-get install -y python3 python3-pip` |
 
-以下を対話で聞く。1つずつ、決め打ちで進めず必ず確認する。
+### 0-4. Pythonライブラリの導入
+
+```bash
+pip install pillow requests imageio-ffmpeg pandas
+# pip が無ければ pip3 で試す
+```
+
+### 0-5. Node側の依存導入とChromiumの取得
+
+このリポジトリの2つの生成フォルダそれぞれで実行する（HTML→PNG変換に使う）。
+
+```bash
+cd テキスト画像生成 && npm install && npx playwright-core install chromium && cd ..
+cd ノート画像生成 && npm install && npx playwright-core install chromium && cd ..
+```
+
+`npx playwright-core install chromium`はブラウザ本体（数十〜100MB程度）をダウンロードするので、回線が遅いと数分かかる。時間がかかっていても失敗ではないことを伝える。
+
+### 0-6. 動作確認
+
+```bash
+cd ノート画像生成
+python3 generate_note.py samples/ai_gakubu_tier.json --seed test
+```
+
+`output/ai_gakubu_tier_paper.png`ができれば成功。**この画像をユーザーに見せて「ここまでで環境構築は完了」と明確に伝える**（非技術者は動いたかどうかの判断がつかないので、ここで区切りをはっきり示すことが重要）。
+
+うまくいかない場合によくある原因:
+- `npx playwright-core install chromium`が権限エラー → 管理者権限で実行し直すか、ユーザーディレクトリ配下に入るはずなので原因を切り分ける
+- `node`コマンドが見つからない → 0-2のインストール後にターミナル（Claude Codeのセッション）を再起動していない可能性が高い
+
+---
+
+## 1. ヒアリング
+
+環境構築が終わったら、以下を対話で聞く。1つずつ、決め打ちで進めず必ず確認する。
 
 - **アカウント名・ハンドル**（例: ＠〇〇。画像内のCTAに使う）
 - **ジャンル**（例: 就活／筋トレ／節約／語学…）
 - **投稿の構造がリスト・ランキング・チェックリストに分解できるか**（→ルートCLAUDE.md「導入時にまず決めること」の判定基準を一緒に確認する。分解できないなら、この仕組みが合わないことを正直に伝える）
-- **Pexels APIキー**を持っているか（無ければ https://www.pexels.com/api/ で取得してもらう）
+- **Pexels APIキー**を持っているか（無ければ https://www.pexels.com/api/ でアカウント作成→取得してもらう。この値だけはClaudeが代わりに取得できないので、ユーザーにコピペしてもらう）
 
-### 3. プレースホルダーの書き換え
+## 2. プレースホルダーの書き換え
 
 聞き取った内容で、以下を書き換える。
 
@@ -38,16 +104,7 @@ python3 --version
 - `動画生成/pexels_queries.py.example` を `pexels_queries.py` にコピーし、`PEXELS_API_KEY` を実際のキーに差し替える（`.gitignore`済みなのでコミットされない）
 - 必要なら `動画生成/pexels_queries.py` にジャンル用の `PEXELS_QUERIES_<名前>` を追記し、`fetch_bg_videos.py` の `THEMES` に1行足す
 
-### 4. 動作確認
-
-```bash
-cd ノート画像生成
-python3 generate_note.py samples/ai_gakubu_tier.json --seed test
-```
-
-`output/`にPNGが出ることを確認し、実際に開いて見せる。「動いた」実感を作るのが目的なので、ここで止めて一緒に画面で確認する。
-
-### 5. 最初の1本を一緒に作る
+## 3. 最初の1本を一緒に作る
 
 聞き取ったジャンルで実際にネタを1つ選び、以下を一緒に実行する。
 
@@ -56,7 +113,7 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 3. 背景動画を`動画生成/fetch_bg_videos.py`で1〜2本取得（内容に合うテーマで。テーマが無ければ`all`でよい）
 4. `動画生成/make_note_video.py`で合成し、`完成品/`に書き出す
 
-### 6. 引き継ぎ
+## 4. 引き継ぎ
 
 - `CLAUDE.md`・各モジュールの`CLAUDE.md`を一通り読んでもらう（特に「全パターン共通のルール」）
 - 以降は`分析/`でインサイトを見ながら、自分のジャンルでの伸びる型を記録・更新していく運用になることを伝える

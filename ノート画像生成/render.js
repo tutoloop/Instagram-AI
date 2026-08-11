@@ -12,8 +12,10 @@ const { chromium } = require('playwright-core');
 const path = require('path');
 const fs = require('fs');
 
-const CHROME = process.env.CHROME_BIN ||
-  path.join(process.env.HOME, '.cache/ms-playwright/chromium-1187/chrome-linux/chrome');
+// CHROME_BIN を明示指定したときだけ上書き。無指定なら playwright-core が
+// `npx playwright-core install chromium` で入れたブラウザをOSごとに自動で見つける
+// （Linux/Mac/Windowsでキャッシュ場所が違うため、パスを決め打ちしない）。
+const CHROME = process.env.CHROME_BIN || undefined;
 
 (async () => {
   const args = process.argv.slice(2);
@@ -25,7 +27,7 @@ const CHROME = process.env.CHROME_BIN ||
   const outDir = path.resolve('output');
   fs.mkdirSync(outDir, { recursive: true });
 
-  const browser = await chromium.launch({ executablePath: CHROME, args: ['--no-sandbox'] });
+  const browser = await chromium.launch({ ...(CHROME ? { executablePath: CHROME } : {}), args: ['--no-sandbox'] });
   const page = await browser.newPage({ deviceScaleFactor: 2 });
   await page.goto('file://' + htmlPath);
   await page.evaluate(() => document.fonts.ready);
