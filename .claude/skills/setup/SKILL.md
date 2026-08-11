@@ -121,6 +121,7 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 - `動画生成/pexels_queries.py.example` を `pexels_queries.py` にコピーし、`PEXELS_API_KEY` を実際のキーに差し替える（`.gitignore`済みなのでコミットされない）
 - 必要なら `動画生成/pexels_queries.py` にジャンル用の `PEXELS_QUERIES_<名前>` を追記し、`fetch_bg_videos.py` の `THEMES` に1行足す
 - FB/IGログイン情報を受け取った場合のみ `分析/.env` を作成（上記の通り）
+- `学習/フィードバック.md.example` を `学習/フィードバック.md` にコピーする（無ければこのステップで必ず作る。今後の指摘・好みを蓄積していく本体）
 
 ## 3. 最初の1本を一緒に作る
 
@@ -135,3 +136,5 @@ python3 generate_note.py samples/ai_gakubu_tier.json --seed test
 
 - `CLAUDE.md`・各モジュールの`CLAUDE.md`を一通り読んでもらう（特に「全パターン共通のルール」）
 - 以降は`分析/`でインサイトを見ながら、自分のジャンルでの伸びる型を記録・更新していく運用になることを伝える
+- **`学習/フィードバック.md`が「使うほど育つAI」の本体であることを伝える**。今後、「ここ直して」「これは良かった」と言うたびにClaudeが自動でここに書き足していくので、ユーザー側で何か操作する必要はない
+- 参考にしたい他アカウントの投稿があれば、スクショを`学習/参考アカウント/`に置いて「この投稿を分析して」と頼めば、パターンを言語化して反映できることも伝える
