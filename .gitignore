@@ -1,0 +1,28 @@
+# 依存関係（初回 npm install / pip install で導入）
+node_modules/
+__pycache__/
+*.pyc
+
+# APIキー・認証情報（購入者ごとに自分で設定する）
+動画生成/pexels_queries.py
+.env
+*.env
+
+# 生成物（大きい・個人のコンテンツなので追跡しない）
+*/output/*.png
+!*/output/.gitkeep
+*/draft/*.html
+動画生成/背景動画/*.mp4
+!動画生成/背景動画/.gitkeep
+完成品/*.mp4
+!完成品/.gitkeep
+
+# 実データ（インサイトCSV・週次レポートなど、購入者自身のアカウントデータ）
+分析/insights_*.csv
+分析/*.csv
+分析/weekly_report_*.md
+
+# OS/エディタ
+.DS_Store
+.playwright-mcp/
+.claude/settings.local.json

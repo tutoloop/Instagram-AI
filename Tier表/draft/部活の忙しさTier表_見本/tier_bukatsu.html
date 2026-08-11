@@ -1,0 +1,121 @@
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Dela';      src:url('../../../ノート画像生成/fonts/DelaGothicOne-Regular.ttf'); }
+@font-face { font-family:'Yusei';     src:url('../../../ノート画像生成/fonts/YuseiMagic-Regular.ttf'); }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body{ background:#0d1220; }
+
+/* 体育館・部活のトーン。ノート画像とは別方向の、硬めのスポーツ看板調 */
+#stage{
+  position:relative; width:1080px; height:1350px; overflow:hidden;
+  background:
+    repeating-linear-gradient(115deg, rgba(255,255,255,.030) 0 3px, transparent 3px 26px),
+    radial-gradient(120% 90% at 50% 0%, #24406e 0%, #111a2e 55%, #0a1120 100%);
+  color:#fff; font-family:'Noto Sans CJK JP', sans-serif;
+  padding:44px 42px 30px; display:flex; flex-direction:column;
+}
+
+/* ---------- header ---------- */
+.head{ text-align:center; margin-bottom:22px; }
+.eyebrow{ display:inline-block; font-size:29px; font-weight:700; letter-spacing:2px;
+  color:#0d1220; background:#ffe14d; padding:6px 22px; border-radius:6px; }
+.title{ font-family:'Dela'; font-size:100px; line-height:1.06; margin-top:14px;
+  white-space:nowrap; text-shadow:0 6px 0 rgba(0,0,0,.35); }
+.title .y{ color:#ffe14d; }
+.sub{ font-size:32px; font-weight:700; color:#c6d4ee; margin-top:12px; }
+.sub b{ color:#fff; }
+
+/* ---------- tier rows ---------- */
+.rows{ flex:1; display:flex; flex-direction:column; gap:14px; }
+/* 各行を等分に伸ばして下の余白を殺す（flex:1 が無いと内容高のままで下が空く） */
+.row{ flex:1; display:flex; align-items:stretch; gap:16px; }
+.cell{ flex:0 0 176px; border-radius:16px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; box-shadow:0 6px 0 rgba(0,0,0,.35); }
+.cell .L{ font-family:'Dela'; font-size:72px; line-height:.92; }
+.cell .M{ font-size:25px; font-weight:700; margin-top:8px; letter-spacing:.5px; }
+.wS .cell{ background:#ff5b6a; } .wA .cell{ background:#ff934a; }
+.wB .cell{ background:#ffca3a; } .wC .cell{ background:#57bf66; }
+.wD .cell{ background:#4f9bd9; }
+.wS .cell *,.wA .cell *,.wC .cell *,.wD .cell *{ color:#fff; }
+.wB .cell *{ color:#3a2f00; }
+
+.chips{ flex:1; display:flex; flex-wrap:wrap; align-content:center; align-items:center;
+  gap:12px; background:rgba(255,255,255,.06); border-radius:16px; padding:12px 16px; }
+.chip{ background:#fff; color:#16233d; border-radius:12px; padding:12px 18px;
+  font-size:35px; font-weight:700; line-height:1.12; }
+.chip small{ display:block; font-size:21px; font-weight:700; color:#7b869c; margin-top:2px; }
+.chip.warn{ background:#e8eef8; }
+.chip.warn small{ color:#a63c3c; }
+
+/* ---------- footer ---------- */
+.foot{ margin-top:18px; display:flex; align-items:center; justify-content:space-between; }
+.hook{ font-family:'Dela'; font-size:40px; }
+.hook .y{ color:#ffe14d; }
+.handle{ font-size:28px; font-weight:700; color:#0d1220; background:#ffe14d;
+  border-radius:999px; padding:9px 22px; }
+.disc{ margin-top:10px; font-size:21px; color:#7d8aa5; text-align:right; }
+</style>
+
+<div id="stage">
+  <div class="head">
+    <div class="eyebrow">勉強時間はどれだけ残る？</div>
+    <div class="title"><span class="y">部活</span>の忙しさTier表</div>
+    <div class="sub">忙しさは<b>言い訳にならない</b>。残った時間の使い方で決まる</div>
+  </div>
+
+  <div class="rows">
+    <div class="row wS">
+      <div class="cell"><div class="L">S</div><div class="M">土日が無い</div></div>
+      <div class="chips">
+        <div class="chip">野球部<small>朝練＋遠征で丸一日</small></div>
+        <div class="chip">サッカー部<small>週6＋日曜は試合</small></div>
+        <div class="chip">吹奏楽部<small>コンクール前は毎日</small></div>
+      </div>
+    </div>
+
+    <div class="row wA">
+      <div class="cell"><div class="L">A</div><div class="M">ほぼ毎日</div></div>
+      <div class="chips">
+        <div class="chip">バスケ部</div>
+        <div class="chip">バレー部</div>
+        <div class="chip">陸上部</div>
+        <div class="chip">テニス部</div>
+      </div>
+    </div>
+
+    <div class="row wB">
+      <div class="cell"><div class="L">B</div><div class="M">週4〜5日</div></div>
+      <div class="chips">
+        <div class="chip">剣道部</div>
+        <div class="chip">卓球部</div>
+        <div class="chip">水泳部</div>
+        <div class="chip">バドミントン部</div>
+      </div>
+    </div>
+
+    <div class="row wC">
+      <div class="cell"><div class="L">C</div><div class="M">自分のペース</div></div>
+      <div class="chips">
+        <div class="chip">美術部</div>
+        <div class="chip">科学部</div>
+        <div class="chip">軽音部</div>
+        <div class="chip">図書委員</div>
+      </div>
+    </div>
+
+    <div class="row wD">
+      <div class="cell"><div class="L">D</div><div class="M">実は要注意</div></div>
+      <div class="chips">
+        <div class="chip warn">帰宅部<small>時間はあるのに使えてない子が多い</small></div>
+        <div class="chip warn">幽霊部員<small>生活リズムが崩れて夜型になりがち</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="hook">あなたの部活は<span class="y">どこ</span>？</div>
+    <div class="handle">＠アカウント名</div>
+  </div>
+  <div class="disc">※学校・強豪度で大きく変わります</div>
+</div>
