@@ -17,7 +17,7 @@ Instagramのリール投稿（リスト・ランキング・チェックリス�
 
 ```bash
 # 1. リポジトリを取得
-git clone <このリポジトリのURL>
+git clone https://github.com/tutoloop/Instagram-AI.git
 cd Instagram-AI
 
 # 2. Node側の依存を導入（HTML→PNGレンダリング用）
@@ -50,4 +50,4 @@ Claude Codeでこのフォルダを開き、`/setup`（`setup/`の構築スキ�
 
 ## ライセンス・利用範囲
 
-このリポジトリは購入者向けに個別配布される非公開ソフトウェアです。第三者への再配布・転売は禁止します。同梱フォントはOFL（`ノート画像生成/fonts/NOTICE.md`参照）。
+このリポジトリは購入者向けに提供しているものです。自分のアカウント運用での利用は自由ですが、このリポジトリ自体（コード・ノウハウ）を第三者に再配布・転売することは禁止します。同梱フォントはOFL（`ノート画像生成/fonts/NOTICE.md`参照）。
