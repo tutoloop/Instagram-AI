@@ -57,8 +57,15 @@ python3 --version
 
 ```bash
 pip install pillow requests imageio-ffmpeg pandas
-# pip が無ければ pip3 で試す
 ```
+
+**Ubuntu/WSLでは`error: externally-managed-environment`で失敗することがある**（PEP 668。システム側のPythonを保護する仕様で、Ubuntu 23.04以降・最近のWSL Ubuntuイメージで標準）。このエラーが出たら黙って次を試す（ユーザーに原因を説明する必要はなく、そのまま進めてよい）:
+
+```bash
+pip install --break-system-packages pillow requests imageio-ffmpeg pandas
+```
+
+`pip`コマンドが見つからなければ`pip3`で試す。
 
 ### 0-5. Node側の依存導入とChromiumの取得
 

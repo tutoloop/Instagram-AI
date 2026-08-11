@@ -80,7 +80,9 @@
 ## コマンド
 
 ```bash
-pip install pillow requests imageio-ffmpeg
+pip install pillow requests imageio-ffmpeg pandas
+# Ubuntu/WSLで externally-managed-environment エラーが出たら:
+# pip install --break-system-packages pillow requests imageio-ffmpeg pandas
 
 # テキスト画像（パターン1）
 cd テキスト画像生成 && python3 generate_text_image.py samples/<slug>.json
