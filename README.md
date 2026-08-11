@@ -15,8 +15,10 @@ Instagramのリール投稿（リスト・ランキング・チェックリス�
 
 **「ドキュメント」フォルダに移動してからクローンしてください。** 何も指定せずにクローンすると、ターミナルの起動位置（Windowsではユーザーフォルダの奥深く）にできてしまい、後からエクスプローラーで探しても見つかりません。
 
+WSL上のユーザー名とWindowsのユーザー名は別物なので、`~/Documents`のような書き方はしないこと。以下のコマンドはWindows側のユーザー名を自動で調べてから移動するので、そのままコピペで使える。
+
 ```bash
-cd ~/Documents        # または cd "/mnt/c/Users/<自分のユーザー名>/Documents"
+cd "/mnt/c/Users/$(cmd.exe /c 'echo %USERNAME%' 2>/dev/null | tr -d '\r\n')/Documents"
 git clone https://github.com/tutoloop/Instagram-AI.git
 cd Instagram-AI
 ```
